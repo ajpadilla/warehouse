@@ -53,6 +53,7 @@ class IngredientController extends Controller
 
     /**
      * @param Request $request
+     * @param $name
      * @return JsonResponse
      */
     public function show(Request $request, $name)
@@ -114,7 +115,7 @@ class IngredientController extends Controller
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return JsonResponse|void
      */
     public function decrease(Request $request)
     {
@@ -140,7 +141,7 @@ class IngredientController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param $ingredient
      * @return JsonResponse
      * @throws Exception
      */

@@ -6,6 +6,7 @@ use App\Repositories\PurchaseRepository;
 use App\Services\PurchaseClientService;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -16,11 +17,18 @@ class PurchaseController extends Controller
      */
     private $purchaseRepository;
 
+    /**
+     * @param PurchaseRepository $purchaseRepository
+     */
     public function __construct(PurchaseRepository $purchaseRepository)
     {
         $this->purchaseRepository = $purchaseRepository;
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(Request $request)
     {
         try {
@@ -33,6 +41,10 @@ class PurchaseController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         try {
