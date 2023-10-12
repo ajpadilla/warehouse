@@ -59,10 +59,20 @@ class IngredientRepository extends AbstractRepository
         return $query->orderBy('ingredients.id');
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function getByName($name)
     {
         return $this->search(['name' => $name])->first();
     }
+
+    /**
+     * @param array $ingredientsList
+     * @param $name
+     * @return mixed|null
+     */
 
     public function getIngredientByName(array $ingredientsList, $name) {
         foreach ($ingredientsList as $key => $ingredient) {
