@@ -1,0 +1,67 @@
+version: "3.7"
+
+services:
+  nginx:
+    container_name: warehouse_nginx
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/var/www
+    links:
+      - app
+    networks:
+      - restaurant_shared_network
+
+  app:
+    container_name: warehouse_app
+    restart: unless-stopped
+    build:
+      args:
+        user: ajpadilla
+        uid: 1000
+      context: ./docker/app
+      dockerfile: Dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/app/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    depends_on:
+      - mariadb
+      - redis
+    networks:
+      - restaurant_shared_network
+
+
+  redis:
+    container_name: warehouse_redis
+    image: redis:latest
+    ports:
+      - "6378:6379"
+    volumes:
+      - ./docker/data/redis:/data
+    networks:
+      - restaurant_shared_network
+
+  mariadb:
+    container_name: warehouse_mariadb
+    image: mariadb:10.2
+    environment:
+      MYSQL_ROOT_PASSWORD: qweasd123
+      MYSQL_DATABASE: restaurant
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123456
+    volumes:
+      - ./docker/data/mariadb:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    networks:
+      - restaurant_shared_network
+
+networks:
+  restaurant_shared_network:
+    external:
+      name: restaurant_shared_network
+
